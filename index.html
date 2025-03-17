@@ -3,15 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Clock</title>
+    <title>Clock App</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button id="themeToggle">🌙</button>
     <div class="container">
-        <h1>Digital Clock ⏰</h1>
-        <div id="clock">00:00:00</div>
+        <h1>Clock App ⏰</h1>
+
+        <!-- Toggle Buttons -->
+        <div class="buttons">
+            <button id="digitalBtn">Digital Clock</button>
+            <button id="analogBtn">Analog Clock</button>
+            <button id="themeToggle">Toggle Theme</button>
+        </div>
+
+        <!-- Digital Clock -->
+        <div id="digitalClock" class="clock">
+            <h2 id="time"></h2>
+        </div>
+
+        <!-- Analog Clock -->
+        <div id="analogClock" class="clock hidden">
+            <div class="clock-face">
+                <div class="hand hour-hand"></div>
+                <div class="hand minute-hand"></div>
+                <div class="hand second-hand"></div>
+                <div class="center-dot"></div>
+            </div>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
