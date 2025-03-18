@@ -1,135 +1,178 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
-    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #f4f4f4;
     color: #333;
-    transition: background 0.3s ease-in-out;
-    padding: 20px;
+    transition: all 0.3s ease-in-out;
 }
 
 .container {
-    margin: 50px auto;
-    padding: 30px;
+    padding: 2rem;
     background: white;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    max-width: 350px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
 }
 
-/* Clock Styling */
-.clock {
-    margin-top: 20px;
+/* Digital Clock */
+#digitalClock {
+    padding: 1rem;
 }
 
 #time {
-    font-size: 48px;
+    font-size: clamp(2rem, 8vw, 3.5rem);
     font-weight: 600;
+    line-height: 1.2;
+}
+
+#period {
+    font-size: 1.25rem;
+    font-weight: 300;
 }
 
 /* Analog Clock */
 .clock-face {
     position: relative;
-    width: 180px;
-    height: 180px;
+    width: 100%;
+    max-width: 250px;
+    aspect-ratio: 1;
     background: white;
     border-radius: 50%;
-    border: 4px solid #333;
-    margin: 20px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 8px solid #333;
+    margin: 2rem auto;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.numbers {
+    position: absolute;
+    inset: 0;
+}
+
+.roman {
+    position: absolute;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transform: translate(-50%, -50%);
+    color: #333;
+}
+
+/* Hands */
 .hand {
     position: absolute;
-    background: black;
-    transform-origin: 50% 100%;
-    transform: rotate(90deg);
-    transition: transform 0.05s linear;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom;
+    border-radius: 4px;
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hour-hand {
     width: 6px;
-    height: 50px;
-    background: black;
-    top: 50%;
-    left: 50%;
-    transform-origin: 50% 90%;
-    transform: translate(-50%, -90%) rotate(0deg);
+    height: 35%;
+    background: #444;
 }
 
 .minute-hand {
     width: 4px;
-    height: 65px;
-    background: gray;
-    top: 50%;
-    left: 50%;
-    transform-origin: 50% 100%;
-    transform: translate(-50%, -100%) rotate(0deg);
+    height: 45%;
+    background: #666;
 }
 
 .second-hand {
     width: 2px;
-    height: 75px;
-    background: red;
-    top: 50%;
-    left: 50%;
-    transform-origin: 50% 100%;
-    transform: translate(-50%, -100%) rotate(0deg);
+    height: 48%;
+    background: #ff4444;
 }
 
 .center-dot {
-    width: 12px;
-    height: 12px;
-    background: black;
+    width: 14px;
+    height: 14px;
+    background: #333;
     border-radius: 50%;
     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
 }
 
-/* Buttons */
+/* Controls */
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
 .buttons {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    gap: 0.5rem;
 }
 
 button {
-    padding: 10px 15px;
-    font-size: 14px;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
     cursor: pointer;
     border: none;
-    border-radius: 5px;
-    transition: 0.3s;
+    border-radius: 8px;
+    transition: transform 0.2s, background 0.2s;
 }
 
-#digitalBtn {
-    background: #007bff;
-    color: white;
+button:hover {
+    transform: translateY(-2px);
 }
 
-#analogBtn {
-    background: #28a745;
-    color: white;
-}
-
-#themeToggle {
-    background: #444;
-    color: white;
-}
+#digitalBtn { background: #007bff; color: white; }
+#analogBtn { background: #28a745; color: white; }
+#formatToggle { background: #ff9800; color: white; }
+#themeToggle { background: #666; color: white; }
 
 /* Dark Mode */
 .dark-mode {
-    background-color: #222;
-    color: white;
+    background-color: #1a1a1a;
+    color: #fff;
 }
 
 .dark-mode .container {
-    background-color: #333;
+    background: #2d2d2d;
 }
+
+.dark-mode .clock-face {
+    background: #222;
+    border-color: #fff;
+}
+
+.dark-mode .roman { color: #fff; }
+.dark-mode .hour-hand { background: #ccc; }
+.dark-mode .minute-hand { background: #aaa; }
+.dark-mode .center-dot { background: #fff; }
 
 .hidden {
     display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .buttons {
+        width: 100%;
+        justify-content: space-between;
+    }
 }

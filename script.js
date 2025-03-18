@@ -1,48 +1,113 @@
-// Digital Clock Function
-function updateDigitalClock() {
-    let now = new Date();
-    let hours = now.getHours().toString().padStart(2, '0');
-    let minutes = now.getMinutes().toString().padStart(2, '0');
-    let seconds = now.getSeconds().toString().padStart(2, '0');
-    document.getElementById("time").textContent = `${hours}:${minutes}:${seconds}`;
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const elements = {
+        time: document.getElementById("time"),
+        period: document.getElementById("period"),
+        hourHand: document.querySelector(".hour-hand"),
+        minuteHand: document.querySelector(".minute-hand"),
+        secondHand: document.querySelector(".second-hand"),
+        digitalClock: document.getElementById("digitalClock"),
+        analogClock: document.getElementById("analogClock")
+    };
 
-// Update every second
-setInterval(updateDigitalClock, 1000);
-updateDigitalClock(); 
+    let is24Hour = false;
+    let lastUpdate = 0;
 
-// Analog Clock Function
-function updateAnalogClock() {
-    let now = new Date();
-    let hours = now.getHours();
-    let minutes = now.getMinutes();
-    let seconds = now.getSeconds();
+    // Roman Numerals
+    const romanNumerals = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
+    const numbersDiv = document.querySelector(".numbers");
+    const radius = 110;
 
-    let hourDeg = (hours % 12) * 30 + minutes * 0.5;
-    let minuteDeg = minutes * 6;
-    let secondDeg = seconds * 6;
+    romanNumerals.forEach((num, i) => {
+        const angle = (i - 3) * (Math.PI / 6);
+        const x = Math.cos(angle) * radius + 125;
+        const y = Math.sin(angle) * radius + 125;
 
-    document.querySelector('.hour-hand').style.transform = `translate(-50%, -90%) rotate(${hourDeg}deg)`;
-    document.querySelector('.minute-hand').style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-    document.querySelector('.second-hand').style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
-}
+        const span = document.createElement("span");
+        span.className = "roman";
+        span.textContent = num;
+        span.style.left = `${x}px`;
+        span.style.top = `${y}px`;
+        numbersDiv.appendChild(span);
+    });
 
-// Update every second
-setInterval(updateAnalogClock, 1000);
-updateAnalogClock(); 
+    // Clock Updates
+    function updateClocks(timestamp) {
+        if (timestamp - lastUpdate < 1000) {
+            requestAnimationFrame(updateClocks);
+            return;
+        }
+        lastUpdate = timestamp;
 
-// Toggle Between Digital and Analog
-document.getElementById("digitalBtn").addEventListener("click", function() {
-    document.getElementById("digitalClock").classList.remove("hidden");
-    document.getElementById("analogClock").classList.add("hidden");
-});
+        const now = new Date();
+        updateDigital(now);
+        updateAnalog(now);
+        requestAnimationFrame(updateClocks);
+    }
 
-document.getElementById("analogBtn").addEventListener("click", function() {
-    document.getElementById("digitalClock").classList.add("hidden");
-    document.getElementById("analogClock").classList.remove("hidden");
-});
+    function updateDigital(now) {
+        try {
+            const hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, "0");
+            const seconds = now.getSeconds().toString().padStart(2, "0");
 
-// Toggle Dark Mode
-document.getElementById("themeToggle").addEventListener("click", function() {
-    document.body.classList.toggle("dark-mode");
+            if (is24Hour) {
+                elements.time.textContent = `${hours.toString().padStart(2, "0")}:${minutes}:${seconds}`;
+                elements.period.textContent = "";
+            } else {
+                const period = hours >= 12 ? "PM" : "AM";
+                const displayHours = (hours % 12) || 12;
+                elements.time.textContent = `${displayHours.toString().padStart(2, "0")}:${minutes}:${seconds}`;
+                elements.period.textContent = period;
+            }
+        } catch (error) {
+            console.error("Digital clock update failed:", error);
+            elements.time.textContent = "Error";
+        }
+    }
+
+    function updateAnalog(now) {
+        try {
+            // Calculate degrees for each hand
+            const hours = now.getHours() % 12;
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            // Hour hand: 360°/12 hours = 30° per hour + 0.5° per minute
+            const hourDeg = (hours * 30) + (minutes * 0.5);
+            // Minute hand: 360°/60 minutes = 6° per minute + 0.1° per second
+            const minuteDeg = (minutes * 6) + (seconds * 0.1);
+            // Second hand: 360°/60 seconds = 6° per second
+            const secondDeg = seconds * 6;
+
+            elements.hourHand.style.transform = `rotate(${hourDeg}deg)`;
+            elements.minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+            elements.secondHand.style.transform = `rotate(${secondDeg}deg)`;
+        } catch (error) {
+            console.error("Analog clock update failed:", error);
+        }
+    }
+
+    // Event Listeners
+    document.getElementById("digitalBtn").addEventListener("click", () => {
+        elements.digitalClock.classList.remove("hidden");
+        elements.analogClock.classList.add("hidden");
+    });
+
+    document.getElementById("analogBtn").addEventListener("click", () => {
+        elements.digitalClock.classList.add("hidden");
+        elements.analogClock.classList.remove("hidden");
+    });
+
+    document.getElementById("themeToggle").addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+    });
+
+    document.getElementById("formatToggle").addEventListener("click", () => {
+        is24Hour = !is24Hour;
+        updateDigital(new Date());
+    });
+
+    // Initial setup
+    elements.digitalClock.classList.remove("hidden");
+    requestAnimationFrame(updateClocks);
 });

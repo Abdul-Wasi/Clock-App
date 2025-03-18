@@ -3,28 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clock App</title>
+    <title>Enhanced Analog & Digital Clock</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Clock App ⏰</h1>
+        <h1>Clock</h1>
 
-        <!-- Toggle Buttons -->
-        <div class="buttons">
-            <button id="digitalBtn">Digital Clock</button>
-            <button id="analogBtn">Analog Clock</button>
-            <button id="themeToggle">Toggle Theme</button>
+        <div class="controls">
+            <div class="buttons">
+                <button id="digitalBtn" aria-label="Show digital clock">Digital</button>
+                <button id="analogBtn" aria-label="Show analog clock">Analog</button>
+                <button id="formatToggle" aria-label="Toggle time format">12H/24H</button>
+            </div>
+            <button id="themeToggle" aria-label="Toggle dark mode">Dark Mode</button>
         </div>
 
         <!-- Digital Clock -->
-        <div id="digitalClock" class="clock">
-            <h2 id="time"></h2>
+        <div id="digitalClock">
+            <div id="time" aria-live="polite"></div>
+            <div id="period"></div>
         </div>
 
         <!-- Analog Clock -->
-        <div id="analogClock" class="clock hidden">
+        <div id="analogClock" class="hidden">
             <div class="clock-face">
+                <div class="numbers"></div>
                 <div class="hand hour-hand"></div>
                 <div class="hand minute-hand"></div>
                 <div class="hand second-hand"></div>
