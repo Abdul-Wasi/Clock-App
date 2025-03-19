@@ -12,20 +12,18 @@
 
         <div class="controls">
             <div class="buttons">
-                <button id="digitalBtn" aria-label="Show digital clock">Digital</button>
-                <button id="analogBtn" aria-label="Show analog clock">Analog</button>
-                <button id="formatToggle" aria-label="Toggle time format">12H/24H</button>
+                <button id="digitalBtn" class="control-btn active" aria-label="Show digital clock">Digital</button>
+                <button id="analogBtn" class="control-btn" aria-label="Show analog clock">Analog</button>
+                <button id="formatToggle" class="control-btn" aria-label="Toggle time format">12H/24H</button>
             </div>
-            <button id="themeToggle" aria-label="Toggle dark mode">Dark Mode</button>
+            <button id="themeToggle" class="control-btn theme-btn" aria-label="Toggle dark mode">Dark Mode</button>
         </div>
 
-        <!-- Digital Clock -->
         <div id="digitalClock">
             <div id="time" aria-live="polite"></div>
             <div id="period"></div>
         </div>
 
-        <!-- Analog Clock -->
         <div id="analogClock" class="hidden">
             <div class="clock-face">
                 <div class="numbers"></div>
