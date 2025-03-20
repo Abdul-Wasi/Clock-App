@@ -193,3 +193,40 @@ h1 {
         justify-content: space-between;
     }
 }
+/* Add these styles to your existing CSS */
+
+/* Date Display */
+#date {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #777;
+    margin-top: 0.5rem;
+}
+
+/* Smooth transitions for clock hands */
+.hand {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fullscreen mode */
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fullscreen .container {
+    width: 100%;
+    max-width: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+/* Add more styles as needed */

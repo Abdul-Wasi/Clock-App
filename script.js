@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const elements = {
         time: document.getElementById("time"),
         period: document.getElementById("period"),
+        date: document.getElementById("date"),
         hourHand: document.querySelector(".hour-hand"),
         minuteHand: document.querySelector(".minute-hand"),
         secondHand: document.querySelector(".second-hand"),
@@ -59,6 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 elements.time.textContent = `${displayHours.toString().padStart(2, "0")}:${minutes}:${seconds}`;
                 elements.period.textContent = period;
             }
+
+            // Update Date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            elements.date.textContent = now.toLocaleDateString(undefined, options);
         } catch (error) {
             console.error("Digital clock update failed:", error);
             elements.time.textContent = "Error";
